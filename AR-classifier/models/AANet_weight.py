@@ -17,7 +17,6 @@ class AANet(nn.Module):
         self.dropout = nn.Dropout(p=0.5)
         
         for m in self.modules():
-            # print(m)
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
@@ -39,34 +38,34 @@ class AANet(nn.Module):
         
         if self.switch == 'add':
             self.weight1 = torch.nn.Parameter(
-                torch.rand(shape_list[nlayer], dtype=torch.float32, requires_grad=True)) if ncs >= 1 else None
+                torch.rand((1), dtype=torch.float32, requires_grad=True)) if ncs >= 1 else None
             self.weight2 = torch.nn.Parameter(
-                torch.rand(shape_list[nlayer], dtype=torch.float32, requires_grad=True)) if ncs >= 2 else None
+                torch.rand((1), dtype=torch.float32, requires_grad=True)) if ncs >= 2 else None
             self.weight3 = torch.nn.Parameter(
-                torch.rand(shape_list[nlayer], dtype=torch.float32, requires_grad=True)) if ncs >= 3 else None
+                torch.rand((1), dtype=torch.float32, requires_grad=True)) if ncs >= 3 else None
             self.weight4 = torch.nn.Parameter(
-                torch.rand(shape_list[nlayer], dtype=torch.float32, requires_grad=True)) if ncs >= 4 else None
+                torch.rand((1), dtype=torch.float32, requires_grad=True)) if ncs >= 4 else None
 
 
     def forward(self, x) -> torch.Tensor:
         if self.switch == 'add':
             if self.ncolorspace == 1:
-                out = self.preBranch1(x[0]) @ self.weight1 / self.weight1.sum()
+                out = self.preBranch1(x[0]) * self.weight1 / self.weight1
             if self.ncolorspace == 2:
-                out = (self.preBranch1(x[0]) @ self.weight1 + \
-                       self.preBranch2(x[1]) @ self.weight2) / \
-                      (self.weight1.sum() + self.weight2.sum())
+                out = (self.preBranch1(x[0]) * self.weight1 + \
+                       self.preBranch2(x[1]) * self.weight2) / \
+                      (self.weight1 + self.weight2)
             if self.ncolorspace == 3:
-                out = (self.preBranch1(x[0]) @ self.weight1 + \
-                       self.preBranch2(x[1]) @ self.weight2 + \
-                       self.preBranch3(x[2]) @ self.weight3) / \
-                      (self.weight1.sum() + self.weight2.sum() + self.weight3.sum())
+                out = (self.preBranch1(x[0]) * self.weight1 + \
+                       self.preBranch2(x[1]) * self.weight2 + \
+                       self.preBranch3(x[2]) * self.weight3) / \
+                      (self.weight1 + self.weight2 + self.weight3)
             if self.ncolorspace == 4:
-                out = (self.preBranch1(x[0]) @ self.weight1 + \
-                       self.preBranch2(x[1]) @ self.weight2 + \
-                       self.preBranch3(x[2]) @ self.weight3 + \
-                       self.preBranch3(x[3]) @ self.weight4) / \
-                      (self.weight1.sum() + self.weight2.sum() + self.weight3.sum() + self.weight4.sum())
+                out = (self.preBranch1(x[0]) * self.weight1 + \
+                       self.preBranch2(x[1]) * self.weight2 + \
+                       self.preBranch3(x[2]) * self.weight3 + \
+                       self.preBranch3(x[3]) * self.weight4) / \
+                      (self.weight1 + self.weight2 + self.weight3 + self.weight4)
 
         else:# concat
             if self.ncolorspace == 1:
@@ -216,7 +215,7 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--ncolorspace', type=int, default=2) 
+    parser.add_argument('--ncolorspace', type=int, default=3) 
     parser.add_argument('--model', type=str, default='AANet') 
     parser.add_argument('--num_classes',type=int,default=3)
     parser.add_argument('--nlayer', type=int, default=2)
@@ -226,8 +225,13 @@ if __name__ == "__main__":
     
     model = AANet(arguements)
     
-    print(model)
-
+    input = [torch.rand((4,3,224,224)) for i in range(3)]
+    
+    output = model(input)
+    
+    # print(output[])
+    for item in output:
+        print(item.shape)
 
 
 
