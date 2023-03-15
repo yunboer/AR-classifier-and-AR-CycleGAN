@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class AANet(nn.Module):
+class AANet_weight(nn.Module):
     def __init__(self, args, num_classes=3):
         super().__init__()
         self.ncolorspace = args.ncolorspace
@@ -223,7 +223,7 @@ if __name__ == "__main__":
     
     arguements = parser.parse_args()
     
-    model = AANet(arguements)
+    model = AANet_weight(arguements)
     
     input = [torch.rand((4,3,224,224)) for i in range(3)]
     
