@@ -89,10 +89,10 @@ def main():
             seed=args.seed,
         )
         wandb.init(
-            project='test',
+            project=args.wdb_project,
             name=args.name,
             config=config,
-            entity='ls',
+            entity=args.wdb_entity,
         )
         if wandb.run is None:
             logging.info('wandb.run failed')

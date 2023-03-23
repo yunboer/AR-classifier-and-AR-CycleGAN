@@ -71,6 +71,8 @@ parser.add_argument('--seed', type=int, default=95)
 parser.add_argument('--gpu-id', type=int, default=0)
 
 parser.add_argument('--use_wandb', type=bool, default=True)
+parser.add_argument('--wdb_project', type=str, default='test_0')
+parser.add_argument('--wdb_entity', type=str, default='my_entity')
 parser.add_argument('--use_tensorboard',action='store_false')
 
 '''resume option'''
