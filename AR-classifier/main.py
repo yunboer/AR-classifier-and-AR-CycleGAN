@@ -89,7 +89,7 @@ def main():
             seed=args.seed,
         )
         wandb.init(
-            project='lab4-channel_colon',
+            project='test',
             name=args.name,
             config=config,
             entity='ls',
@@ -100,7 +100,7 @@ def main():
         wandb.watch(model, loss_function, log="all", log_freq=20)
         
     if args.use_tensorboard:
-        tw = SummaryWriter('/root/tf-logs/runs/'+args.name+'/'+args.model+'/')
+        tw = SummaryWriter('./tf-logs/runs/'+args.name+'/'+args.model+'/')
     
     
 

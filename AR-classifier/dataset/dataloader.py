@@ -501,7 +501,7 @@ def get_dataset_list(args):
     
     ori_transforms = [
         transforms.ToTensor(),
-        transforms.Resize((224,224)),
+      #  transforms.Resize((224,224)),
         transforms.Normalize([0,0,0],[1,1,1])
     ]
     

@@ -25,11 +25,11 @@ class AANet(nn.Module):
 
     def _make_branch(self, ncs, num_classes=3, nlayer=2):
         shape_list = [
-            (3, 224, 224), 
-            (64, 224, 224), 
-            (128, 112, 112), 
-            (256, 56, 56), 
-            (512, 28, 28), 
+            (3, 512, 512), 
+            (64, 512, 512), 
+            (128, 256, 256), 
+            (256, 128, 128), 
+            (512, 64, 64), 
             (3, 3)]
 
         self.preBranch1 = AApreBranch(num_classes=num_classes, nlayer=nlayer) if ncs >= 1 else None
