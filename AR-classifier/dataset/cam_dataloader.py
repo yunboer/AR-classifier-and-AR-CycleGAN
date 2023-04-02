@@ -50,7 +50,7 @@ class NewAAImageFolderV2(ImageFolder):
         super().__init__(root)
         self.args = args
         self.transforms_dict = transforms_dict
-        assert args.rgb + args.hsv == args.ncolorspace, 'Error: number of color space do not match'
+        assert args.rgb + args.hsv + args.lab + args.hed == args.ncolorspace, 'Error: number of color space do not match'
         
         
     def __getitem__(self, index: int):
@@ -67,12 +67,23 @@ class NewAAImageFolderV2(ImageFolder):
             xs.append(self.transforms_dict['rgb'](img))
         if self.args.hsv:
             hsv = self.transforms_dict['hsv'](img)
-            hsv = np.array(hsv).transpose((1,2,0))
-            hsv = cv2.cvtColor(hsv, cv2.COLOR_RGB2HSV).transpose((2,0,1))
+            # hsv = np.array(hsv).transpose((1,2,0))
+            # hsv = cv2.cvtColor(hsv, cv2.COLOR_RGB2HSV).transpose((2,0,1))
             xs.append(hsv)
-            
+        if self.args.lab:
+            lab = self.transforms_dict['lab'](img)
+            # lab = np.array(lab).transpose((1,2,0))
+            # lab = cv2.cvtColor(lab,cv2.COLOR_RGB2LAB).transpose((2,0,1))
+            xs.append(lab)
+        if self.args.hed:
+            hed = self.transforms_dict['hed'](img)
+            # hed = np.array(hed).transpose((1,2,0))
+            # hed = rgb2hed(hed).transpose((2,0,1))
+            # hed = hed.astype('float32')
+            xs.append(hed)
+
         return xs,target,path
-    
+
 def get_new_dataset(args):
     '''
         Return three dataset:
@@ -82,15 +93,17 @@ def get_new_dataset(args):
         
     '''
     ColorSpaces = [
-        'rgb','hsv'
+        'rgb', 'hsv',
+        'hed', 'lab'
     ]
     yaml_paths = [
-        args.rgb_yaml_add,args.hsv_yaml_add
+        args.rgb_yaml_add, args.hsv_yaml_add,
+        args.hed_yaml_add, args.lab_yaml_add,
     ]
     
     ori_transforms = [
         transforms.ToTensor(),
-        #transforms.Resize((224,224)),
+       #transforms.Resize((224,224)),
         transforms.Normalize([0,0,0],[1,1,1])
     ]
     
@@ -106,9 +119,19 @@ def get_new_dataset(args):
                             is_train=True
                         ))
         transforms_dict_rsna[colorspace] = transforms.Compose(new_transforms)
+
+    transforms_dict_norsna = {}
+    for colorspace, yaml_path in zip(ColorSpaces, yaml_paths):
+        new_transforms = ori_transforms.copy()
+        transforms_dict_norsna[colorspace] = transforms.Compose(new_transforms)
+
+    if args.train_rsna == 1:
+        train_transform_dict = transforms_dict_rsna
+    else:
+        train_transform_dict = transforms_dict_norsna
         
     
-    train_transform_dict = transforms_dict_rsna
+    # train_transform_dict = transforms_dict_rsna
 
 
         
@@ -122,16 +145,18 @@ def get_new_dataset(args):
 
 def get_new_dataloader(args):
     batch_size = args.batch_size
+    shuffle = args.shuffle
     num_workers = args.num_workers
+    pin_memory = args.pin_memory
 
     
     train_dataset= get_new_dataset(args)
-    
+
     train_dataloader = DataLoader(
         dataset= train_dataset,
         batch_size=batch_size,
-        shuffle=False,
-        pin_memory=True,
+        shuffle=shuffle,
+        pin_memory=pin_memory,
         num_workers=num_workers,
         prefetch_factor=8,
         persistent_workers=True
