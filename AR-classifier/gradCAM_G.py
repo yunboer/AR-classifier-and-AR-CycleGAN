@@ -7,7 +7,7 @@ from tqdm import tqdm
 from tifffile import imwrite
 import os
 import numpy as np
-
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 def main():
     args = get_cam_arguements()
@@ -16,8 +16,10 @@ def main():
     model.load_state_dict(ckpt['state_dict'])
     model.cuda()
     model.eval()
+    
+    target_layer = model.backBranch.pre_layers[-2]
 
-    cam_extractor = LayerCAM(model = model, target_layer='layer4')
+    cam_extractor = LayerCAM(model = model, target_layer=target_layer)
     
     data_loader = get_new_dataloader(args)
     os.makedirs(args.save_root, exist_ok=True)
@@ -31,8 +33,8 @@ def main():
     for imgs, labels, paths in tqdm(data_loader):
         if labels[0] != 0:
             continue
-        imgs[0] = imgs[0].cuda()
-        imgs[1] = imgs[1].cuda()
+        for i in range(args.ncolorspace):
+            imgs[i] = imgs[i].cuda()
         labels = labels.cuda()
         out = model(imgs)
         
@@ -57,3 +59,4 @@ def main():
     
 if __name__ == '__main__':
     main()
+
