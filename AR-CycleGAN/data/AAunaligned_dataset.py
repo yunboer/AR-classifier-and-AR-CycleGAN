@@ -30,11 +30,11 @@ class AAUnalignedDataset(BaseDataset):
         BaseDataset.__init__(self, opt)
         self.dir_A = os.path.join(opt.dataroot, opt.phase + 'A')  # create a path '/path/to/data/trainA'
         self.dir_B = os.path.join(opt.dataroot, opt.phase + 'B')  # create a path '/path/to/data/trainB'
-        # self.dir_cam = os.path.join(opt.dataroot, 'cam')  # create a path '/path/to/data/cam'
+        self.dir_cam = os.path.join(opt.dataroot, 'cam')  # create a path '/path/to/data/cam'
 
         self.A_paths = sorted(make_dataset(self.dir_A, opt.max_dataset_size))   # load images from '/path/to/data/trainA'
         self.B_paths = sorted(make_dataset(self.dir_B, opt.max_dataset_size))    # load images from '/path/to/data/trainB'
-        # self.CAM_paths = sorted(make_dataset(self.dir_cam, opt.max_dataset_size))    # load images from '/path/to/data/cam'
+        self.CAM_paths = sorted(make_dataset(self.dir_cam, opt.max_dataset_size))    # load images from '/path/to/data/cam'
 
         self.camshape = opt.camshape
         
@@ -70,7 +70,7 @@ class AAUnalignedDataset(BaseDataset):
             B_paths (str)    -- image paths
         """
         A_path = self.A_paths[index % self.A_size]  # make sure index is within then range
-        # cam_path = self.CAM_paths[index % self.A_size]
+        cam_path = self.CAM_paths[index % self.A_size]
         
         if self.opt.serial_batches:   # make sure index is within then range
             index_B = index % self.B_size
@@ -82,25 +82,25 @@ class AAUnalignedDataset(BaseDataset):
         B_img = Image.open(B_path).convert('RGB')
 
         
-        # cam_sts = cv2.resize(tifffile.imread(cam_path), (256,256)) 
-        cam_tst = self.randomGenerator(opt=self.camshape)
+        cam_sts = cv2.resize(tifffile.imread(cam_path), (512, 512)) 
+        cam_tst = cv2.resize(self.randomGenerator(opt=self.camshape), (512, 512))
         
         
         # apply image transformation
         A = self.transform_A(A_img)
         B = self.transform_B(B_img)
-        # A_R = self.transform_A(Image.fromarray(self.rsna(Image.open(A_path))).convert('RGB'))
-        # B_R = self.transform_B(Image.fromarray(self.rsna(Image.open(B_path))).convert('RGB'))
+        A_R = self.transform_A(Image.fromarray(self.rsna(Image.open(A_path))).convert('RGB'))
+        B_R = self.transform_B(Image.fromarray(self.rsna(Image.open(B_path))).convert('RGB'))
         
         
-        return {'A': A,
-                'B': B,
-                # 'A_R':A_R,
-                # 'B_R':B_R,
-                # 'cam_sts':cam_sts,
-                'cam_tst':cam_tst,
-                'A_paths': A_path, 
-                'B_paths': B_path,}
+        # return {'A': A,
+        #         'B': B,
+        #         # 'A_R':A_R,
+        #         # 'B_R':B_R,
+        #         # 'cam_sts':cam_sts,
+        #         'cam_tst':cam_tst,
+        #         'A_paths': A_path,
+        #         'B_paths': B_path,}
         
         return {'A': A,
                 'B': B,

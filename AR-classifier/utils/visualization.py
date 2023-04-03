@@ -14,7 +14,7 @@ def process(src:str, save_root:str):
     cam_names = os.listdir(src)
     for cam_name in cam_names:
         cam = tifffile.imread(os.path.join(src,cam_name))
-        processed_cam = pack(cam, iter = 3)
+        processed_cam = pack(cam, iter = 4)
         cv2.imwrite(os.path.join(save_root,cam_name),processed_cam)
 
         
@@ -30,10 +30,10 @@ def seq(image):
 def pack(image,iter):
     cv2.threshold(image,0.1,1,cv2.THRESH_TOZERO,image)
     image = cv2.medianBlur(image, 5)
-    image = cv2.resize(image,(256,256))
+    # image = cv2.resize(image,(256,256))
     for i in range(iter):
         image = seq(image)
-    image = cv2.resize(image,(28,28))
+    # image = cv2.resize(image,(28,28))
     
     return image
 

@@ -8,6 +8,8 @@ import os
 import cv2
 from tifffile import imwrite
 
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+
 def main():
     args = get_arguements()
     model = get_model(args)
@@ -29,23 +31,22 @@ def main():
     
     model.eval()
     for imgs, labels, paths in tqdm(data_loader):
-        imgs[0] = imgs[0].cuda()
-        imgs[1] = imgs[1].cuda()
+        for i in range(args.ncolorspace):
+            imgs[i] = imgs[i].cuda()
         labels = labels.cuda()
-        
-        imgs[0].requires_grad_()
-        imgs[1].requires_grad_()
-        
-        
+
+        for i in range(args.ncolorspace):
+            imgs[i].requires_grad_()
+
         logits = model(imgs)
         logits = logits.gather(1, labels.view(-1,1))
         logits = logits.squeeze()
         logits.backward()
-        
-        saliency0 = abs(imgs[0].grad.data)
-        saliency1 = abs(imgs[1].grad.data)
 
-        saliency = saliency0 + saliency1
+        saliency_list = []
+        for i in range(args.ncolorspace):
+            saliency_list.append(abs(imgs[i].grad.data))
+        saliency = sum(saliency_list)
         
         saliency, _ = torch.max(saliency, dim=1)
         saliency = saliency.cpu().detach().numpy()

@@ -9,16 +9,23 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('--data_root', type=str,default=r"")
 
-parser.add_argument('--batch_size', type = int, default = 4)
-parser.add_argument('--num_workers',type = int, default = 2)
+parser.add_argument('--shuffle', type=bool, default=False)
+parser.add_argument('--batch_size', type = int, default=4)
+parser.add_argument('--num_workers',type = int, default=2)
+parser.add_argument('--pin_memory', type=bool, default=True)
 
+parser.add_argument('--train_rsna',type=int,default=1,help="whether apply randstainna on train set")
 
-parser.add_argument('--rgb_yaml_add',type=str,default=r"./dataset/rsna_yaml/ANU-10k-Final-RGB.yaml")
-parser.add_argument('--hsv_yaml_add',type=str,default=r"./dataset/rsna_yaml/ANU-10k-Final-HSV.yaml")
+parser.add_argument('--rgb_yaml_add',type=str,default=r"./dataset/rsna_yaml/ANU-10k-normal-rgb.yaml")
+parser.add_argument('--hed_yaml_add',type=str,default=r"./dataset/rsna_yaml/ANU-10k-normal-hed.yaml")
+parser.add_argument('--hsv_yaml_add',type=str,default=r"./dataset/rsna_yaml/ANU-10k-normal-hsv.yaml")
+parser.add_argument('--lab_yaml_add',type=str,default=r"./dataset/rsna_yaml/ANU-10k-normal-lab.yaml")
 
-parser.add_argument('--ncolorspace', type=int, default=2) ##
+parser.add_argument('--ncolorspace', type=int, default=2)
 parser.add_argument('--rgb', type=int, default=1)
 parser.add_argument('--hsv', type=int, default=1)
+parser.add_argument('--hed', type=int, default=0)
+parser.add_argument('--lab', type=int, default=0)
 
 parser.add_argument('--save_root', type=str, default=r"")
 
@@ -45,3 +52,4 @@ if __name__ == '__main__':
         if isinstance(arg,list):
             arg = ",".join(map(str,arg))
         print("{:>20}:{:<20}".format(name,arg))
+
