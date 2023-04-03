@@ -196,6 +196,7 @@ class SSIM_CAM(torch.nn.Module):
         self.ssim = SSIM()
 
     def forward(self, img1: Tensor, img2: Tensor, cam: Tensor):
+        cam = cam.unsqueeze(1)
         input1 = img1 * (1-cam)
         input2 = img2 * (1-cam)
         return self.ssim(input1, input2)
@@ -205,4 +206,5 @@ class BSC(torch.nn.Module):
     def __init__(self) -> None:
         super().__init__()
     def forward(self, img1: Tensor, img2: Tensor, cam: Tensor):
+        cam = cam.unsqueeze(1)
         return F.l1_loss(img1*(1-cam),img2*(1-cam)) #batch form 
