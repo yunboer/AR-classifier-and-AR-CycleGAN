@@ -43,6 +43,7 @@ class AACycleGANModel(BaseModel):
             parser.add_argument('--lambda_A', type=float, default=10.0, help='weight for cycle loss (A -> B -> A)')
             parser.add_argument('--lambda_B', type=float, default=10.0, help='weight for cycle loss (B -> A -> B)')
             parser.add_argument('--lambda_identity', type=float, default=0.0, help='use identity mapping. Setting lambda_identity other than 0 has an effect of scaling the weight of the identity mapping loss. For example, if the weight of the identity loss should be 10 times smaller than the weight of the reconstruction loss, please set lambda_identity = 0.1')
+            parser.add_argument('--lambda_adv', type=float, default=1.0, help='loss with adv')
             parser.add_argument('--lambda_rsna', type=float, default=1.0, help='loss with rsna')
             parser.add_argument('--lambda_SC_A', type=float, default=1.0, help='loss with SC')
             parser.add_argument('--lambda_SC_B', type=float, default=1.0, help='loss with SC')
@@ -200,6 +201,7 @@ class AACycleGANModel(BaseModel):
         lambda_idt = self.opt.lambda_identity
         lambda_A = self.opt.lambda_A
         lambda_B = self.opt.lambda_B
+        lambda_adv = self.opt.lambda_adv
         lambda_rsna = self.opt.lambda_rsna
         lambda_SC_A = self.opt.lambda_SC_A
         lambda_SC_B = self.opt.lambda_SC_B
@@ -223,9 +225,9 @@ class AACycleGANModel(BaseModel):
             self.loss_idt_B = 0
 
         # GAN loss D_A(G_A(A))
-        self.loss_G_A = self.criterionGAN(self.netD_A(self.fake_B), True) + lambda_rsna * self.criterionGAN(self.netD_A(self.fake_B_R), True)
+        self.loss_G_A = (self.criterionGAN(self.netD_A(self.fake_B), True) + lambda_rsna * self.criterionGAN(self.netD_A(self.fake_B_R), True)) * lambda_adv
         # GAN loss D_B(G_B(B))
-        self.loss_G_B = self.criterionGAN(self.netD_B(self.fake_A), True) + lambda_rsna * self.criterionGAN(self.netD_B(self.fake_A_R), True)
+        self.loss_G_B = (self.criterionGAN(self.netD_B(self.fake_A), True) + lambda_rsna * self.criterionGAN(self.netD_B(self.fake_A_R), True)) * lambda_adv
         # Forward cycle loss || G_B(G_A(A)) - A||
         self.loss_cycle_A = (self.criterionCycle(self.rec_A, self.real_A) + lambda_rsna * self.criterionCycle(self.rec_A_R, self.real_A_R))* lambda_A
         # Backward cycle loss || G_A(G_B(B)) - B||
