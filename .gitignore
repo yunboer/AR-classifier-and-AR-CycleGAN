@@ -45,4 +45,4 @@ test/data/legacy_serialized.pt
 */*.log
 */tf-logs/
 */*.sh
-*/*.txt
+*/eval_result.txt
