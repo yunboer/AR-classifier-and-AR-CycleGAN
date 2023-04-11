@@ -5,3 +5,6 @@ pytest
 tifffile
 opencv-python
 scikit-image
+chardet
+tqdm
+tensorboard
