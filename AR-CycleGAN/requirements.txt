@@ -6,3 +6,4 @@ wandb
 tifffile
 opencv-python
 scikit-image
+pyyaml
