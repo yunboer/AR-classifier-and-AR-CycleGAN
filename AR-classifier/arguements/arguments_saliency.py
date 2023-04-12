@@ -37,6 +37,7 @@ parser.add_argument('--nlayer', type=int, default=2)
 parser.add_argument('--switch', type=str, default='add', choices=['add', 'concat'])
 parser.add_argument('--ckpt_load_path',type=str,default=r"")
 
+parser.add_argument('--process', default=True, action='store_false')
 
 arguements = parser.parse_args()
 

@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import os
 import cv2
 from tifffile import imwrite
-
+from utils.visualization import *
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 def main():
@@ -60,6 +60,8 @@ def main():
             final_path = os.path.join(args.save_root, category, filename[:-3]+'tif')
             
             cv2.normalize(saliency_img,saliency_img,0,1,cv2.NORM_MINMAX)
+            if args.process:
+                saliency_img = pack(saliency_img, iter=4)
             imwrite(final_path,saliency_img)
             
 if __name__ == '__main__':
