@@ -8,3 +8,4 @@ scikit-image
 chardet
 tqdm
 tensorboard
+matplotlib
