@@ -13,22 +13,22 @@ def process(src:str, save_root:str):
     '''
     cam_names = os.listdir(src)
     for cam_name in cam_names:
-        cam = tifffile.imread(os.path.join(src,cam_name))
-        processed_cam = pack(cam, iter = 4)
-        cv2.imwrite(os.path.join(save_root,cam_name),processed_cam)
+        cam = tifffile.imread(os.path.join(src, cam_name))
+        processed_cam = pack(cam, iter=4)
+        cv2.imwrite(os.path.join(save_root,cam_name), processed_cam)
 
         
 def seq(image):
-    k = np.ones((16,16),dtype=np.float32)/256.0
-    image = cv2.filter2D(image,-1,kernel=k)
-    cv2.normalize(image,image,0,1,cv2.NORM_MINMAX)
+    k = np.ones((16, 16), dtype=np.float32)/256.0
+    image = cv2.filter2D(image, -1, kernel=k)
+    cv2.normalize(image, image, 0, 1, cv2.NORM_MINMAX)
     image = cv2.medianBlur(image, 5)
-    cv2.threshold(image,0.2,1,cv2.THRESH_TOZERO,image)
+    cv2.threshold(image, 0.2, 1, cv2.THRESH_TOZERO,image)
     
     return image
 
-def pack(image,iter):
-    cv2.threshold(image,0.1,1,cv2.THRESH_TOZERO,image)
+def pack(image, iter):
+    cv2.threshold(image, 0.1, 1, cv2.THRESH_TOZERO,image)
     image = cv2.medianBlur(image, 5)
     # image = cv2.resize(image,(256,256))
     for i in range(iter):
