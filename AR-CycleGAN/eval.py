@@ -14,23 +14,25 @@ import argparse
 parser = argparse.ArgumentParser(description='eval & divide')
 
 parser.add_argument('--name', help='name of exp', type=str)
+parser.add_argument('--phase', type=str, default='test', help='train, val, test, etc')
 parser.add_argument('--ndivide', action='store_true', default=False)
-parser.add_argument('--neval',action='store_true', default=False)
+parser.add_argument('--neval', action='store_true', default=False)
+parser.add_argument('--nepoch', default='200')
 
 args = parser.parse_args()
 
 
-def divide(result_path='./results', name=None):
-    src = result_path + '/' + name + '/train_200/images'
-    tar_quan = result_path + '/' + name + '/train_200/quantification'
-    tar_vis = result_path + '/' + name + '/train_200/visualization'
-    tar_vis2 = result_path + '/' + name + '/train_200/visualization2'
+def divide(result_path='./results', name="test", phase="test", nepoch=200):
+    src = result_path + '/' + name + '/' + phase + '_' + nepoch + '/images'
+    tar_quan = result_path + '/' + name + '/' + phase + '_' + nepoch + '/quantification'
+    tar_vis = result_path + '/' + name + '/' + phase + '_' + nepoch + '/visualization'
+    # tar_vis = result_path + '/' + name + '/' + phase +  + '_' + nepoch + '/visualization2'
     if not os.path.exists(tar_quan):
         os.makedirs(tar_quan)
     if not os.path.exists(tar_vis):
         os.makedirs(tar_vis)
-    if not os.path.exists(tar_vis2):
-        os.makedirs(tar_vis2)
+    # if not os.path.exists(tar_vis2):
+    #     os.makedirs(tar_vis2)
     image_names = os.listdir(src)
     print("{} images in total".format(len(image_names)))
     for image_name in image_names:
@@ -40,15 +42,15 @@ def divide(result_path='./results', name=None):
             shutil.copy(os.path.join(src,image_name),os.path.join(tar_quan,image_name))
         if ss in ['real_A','fake_B']:
             shutil.copy(os.path.join(src,image_name),os.path.join(tar_vis,image_name))
-        if ss in ['real_B','fake_A']:
-            shutil.copy(os.path.join(src,image_name),os.path.join(tar_vis2,image_name))
-        if ss in ['real_A_R', 'fake_B_R']:
-            shutil.copy(os.path.join(src, image_name), os.path.join(tar_vis, image_name.replace('real_A_R', '_R_real_A').replace('fake_B_R', '_R_fake_B')))
-        if ss in ['real_B_R', 'fake_A_R']:
-            shutil.copy(os.path.join(src, image_name), os.path.join(tar_vis, image_name.replace('real_B_R', '_R_real_B').replace('fake_A_R', '_R_fake_A')))
+        # if ss in ['real_A_R', 'fake_B_R']:
+        #     shutil.copy(os.path.join(src, image_name), os.path.join(tar_vis, image_name.replace('real_A_R', '_R_real_A').replace('fake_B_R', '_R_fake_B')))
+        # if ss in ['real_B','fake_A']:
+        #     shutil.copy(os.path.join(src,image_name),os.path.join(tar_vis2,image_name))
+        # if ss in ['real_B_R', 'fake_A_R']:
+        #     shutil.copy(os.path.join(src, image_name), os.path.join(tar_vis2, image_name.replace('real_B_R', '_R_real_B').replace('fake_A_R', '_R_fake_A')))
 
 
-def eval(dataset_dir='./results/test/images',name="test"):
+def eval(dataset_dir='./results/test/images',name="test", phase="test", nepoch=200):
     with open('./eval_result.txt', 'a') as f:
         f.write('\n' + '-' * 30 + '\n')
         f.write('\n' + time.asctime() + '\n')
@@ -150,6 +152,10 @@ def eval(dataset_dir='./results/test/images',name="test"):
 
 if __name__ == '__main__':
     if not args.ndivide:
-        divide(result_path='./results', name=args.name)
+        divide(result_path='./results',
+               name=args.name, 
+               phase=args.phase, 
+               nepoch=args.nepoch)
     if not args.neval:
-        eval(dataset_dir='./results/' + args.name + '/' + 'train_200/images', name=args.name)
+        eval(dataset_dir='./results/' + args.name + '/' + args.phase + '_' + args.nepoch + '/images',
+             name=args.name + "_" + args.phase + args.nepoch)
