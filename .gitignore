@@ -46,3 +46,4 @@ test/data/legacy_serialized.pt
 */tf-logs/
 */*.sh
 */eval_result.txt
+*/data/norsna_dataset.py
