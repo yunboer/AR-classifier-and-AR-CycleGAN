@@ -102,7 +102,6 @@ def eval(dataset_dir='./results/test/images',name="test", phase="test", nepoch=2
         tt = transforms.ToTensor()
         metric_mean_vals = {}
 
-        f.write("s->t->s:\n")
         for metric in metrics:
             func = metric_functions[metric]
             metric_vals = []
@@ -121,7 +120,12 @@ def eval(dataset_dir='./results/test/images',name="test", phase="test", nepoch=2
                     metric_val = func(real,rec)
                 metric_vals.append(metric_val)
             metric_mean_vals[metric] = np.mean(metric_vals)
-            f.write("{}:{}\n".format(metric, metric_mean_vals[metric]))
+        f.write("s->t->s:\n")
+        for item in metric_mean_vals:
+            f.write("{}:{}\n".format(item, metric_mean_vals[item]))
+        for item in metric_mean_vals:
+            f.write("& {} ".format(metric_mean_vals[item]))
+        f.write("dataset:\n{}\n".format(dataset_dir))
 
 
         metric_mean_vals={}
@@ -147,7 +151,9 @@ def eval(dataset_dir='./results/test/images',name="test", phase="test", nepoch=2
         f.write("t->s->t:\n")
         for item in metric_mean_vals:
             f.write("{}:{}\n".format(item, metric_mean_vals[item]))
-        f.write("{}\n".format(dataset_dir))
+        for item in metric_mean_vals:
+            f.write("&{} ".format(metric_mean_vals[item]))
+        f.write("\n{}\n".format(dataset_dir))
 
 
 if __name__ == '__main__':
