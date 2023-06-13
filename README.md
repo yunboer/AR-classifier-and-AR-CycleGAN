@@ -4,19 +4,19 @@
 
 This repository contains PyTorch code for the paper: *Artifact Detection and Restoration in Histology Images with Stain-Style and Structural Preservation*
 
-This repository contains two new models: AR-classifier and AR-CycleGAN. The AR-classifier is designed to classify artifacts, while the AR-CycleGAN is capable of artifact recovery. 
+This repository contains two new models: **AR-classifier** and **AR-CycleGAN**. The **AR-classifier** is designed to classify artifacts, while the **AR-CycleGAN** is capable of artifact recovery. 
 
-The AR-classifier is designed based on the ResNet18 architecture and is capable of classifying patches from whole slide images (WSIs) into three categories: "artifact," "normal," and "unrestorable."
+The **AR-classifier** is designed based on the ResNet18 architecture and is capable of classifying patches from whole slide images (WSIs) into three categories: "artifact," "normal," and "unrestorable."
 
 <img src="./figs/stage1.png" width="100%" align=center>
 
-The AR-Cyclegan is designed based on the CycleGAN and can remove artifacts from patches belonging to the "artifact" category.
+The **AR-CycleGAN** is designed based on the CycleGAN and can remove artifacts from patches belonging to the "artifact" category.
 
 <img src="./figs/stage2.png" width="100%" align=center>
 
 ## Datasets
 
-We provide two download links here for the our artifacts classification and cyclegan dataset.
+We provide two download links here for the our artifacts classification and CycleGAN dataset.
 
 [OneDrive](https://sjtueducn-my.sharepoint.com/:f:/g/personal/yx_sun_sjtu_edu_cn/EmL-Ek6v-ElNp9E96AiDVe0B_N12Beca57UrW_R-qZohMw?e=dLBrbq)
 
@@ -45,7 +45,7 @@ Ensure your Python >= 3.8 (recommended 3.8)
     ```
 
 
-This document is currently being updated...
+*This document is currently being updated...*
 
 <!-- ---
 
