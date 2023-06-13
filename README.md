@@ -2,9 +2,9 @@
 
 This repository contains PyTorch code for the paper: *Artifact Detection and Restoration in Histology Images with Stain-Style and Structural Preservation*
 
-The artifacts in histology images may obstruct the accurate interpretation of medical information and cause misdiagnosis. A methodical pre-processing framework to detect and restore artifacts in histopathology images. The framework can differentiate various artifacts, e.g., tissue folds, marking dye, tattoo pigment, and spot, from normal tissues and attempt a restoration depending on the recoverability.
+The artifacts in histology images may obstruct the accurate interpretation of medical information and cause misdiagnosis. In this paper, we proposed a new framework for artifacts detection, classification and removal. The framework can differentiate various artifacts, e.g., tissue folds, marking dye, tattoo pigment, and spot, from normal tissues and attempt a restoration depending on the recoverability. 
 
-In this paper, we proposed a new framework for artifacts detection, classification and removal. This repository contains two new model: AR-classifier and AR-CycleGAN. 
+This repository contains two new models: AR-classifier and AR-CycleGAN. The AR-classifier is designed to classify artifacts, while the AR-CycleGAN is capable of artifact recovery. 
 
 The AR-classifier is designed based on the ResNet18 architecture and is capable of classifying patches from whole slide images (WSIs) into three categories: "artifact," "normal," and "unrestorable."
 
