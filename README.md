@@ -20,7 +20,7 @@ We provide two download links here for the our artifacts classification and cycl
 
 [OneDrive](https://sjtueducn-my.sharepoint.com/:f:/g/personal/yx_sun_sjtu_edu_cn/EmL-Ek6v-ElNp9E96AiDVe0B_N12Beca57UrW_R-qZohMw?e=dLBrbq)
 
-[Baidu](https://pan.baidu.com/s/1Pbws5T46uHdAEAgiOFcH1A?pwd=dx6t)
+[Baidu Cloud](https://pan.baidu.com/s/1Pbws5T46uHdAEAgiOFcH1A?pwd=dx6t)
 
 
 ---
