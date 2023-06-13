@@ -1,8 +1,8 @@
 # AR-classifier-and-AR-CycleGAN
 
-This repository contains PyTorch code for the paper: *Artifact Detection and Restoration in Histology Images with Stain-Style and Structural Preservation*
+## Introduction
 
-The artifacts in histology images may obstruct the accurate interpretation of medical information and cause misdiagnosis. In this paper, we proposed a new framework for artifacts detection, classification and removal. The framework can differentiate various artifacts, e.g., tissue folds, marking dye, tattoo pigment, and spot, from normal tissues and attempt a restoration depending on the recoverability. 
+This repository contains PyTorch code for the paper: *Artifact Detection and Restoration in Histology Images with Stain-Style and Structural Preservation*
 
 This repository contains two new models: AR-classifier and AR-CycleGAN. The AR-classifier is designed to classify artifacts, while the AR-CycleGAN is capable of artifact recovery. 
 
@@ -23,9 +23,35 @@ We provide two download links here for the our artifacts classification and cycl
 [Baidu Cloud](https://pan.baidu.com/s/1Pbws5T46uHdAEAgiOFcH1A?pwd=dx6t)
 
 
----
+## Getting Started
+
+Ensure your Python >= 3.8 (recommended 3.8)
+
+1. Clone the repo
+    ```
+    git clone https://github.com/KKK-Liu/AR-classifier-and-AR-CycleGAN.git
+    ```
+
+2. pip all the requirement packages.
+    ```
+    # if you want to try AR-classifier
+    cd AR-classifier
+
+    # if you want to try AR-CycleGAN
+    cd AR-CycleGAN
+
+    # pip install all the packages
+    pip install -r requirements.txt
+    ```
+
+
+This document is currently being updated...
+
+<!-- ---
 
 The expriment images will be released soon.
 
-<img src="./figs/cmp.png" width="60%" align=center>
+<img src="./figs/cmp.png" width="60%" align=center> -->
+
+
 
