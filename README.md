@@ -29,7 +29,7 @@ Ensure your Python >= 3.8 (recommended 3.8)
 
 1. Clone the repo
     ```
-    git clone https://github.com/KKK-Liu/AR-classifier-and-AR-CycleGAN.git
+    git clone https://github.com/yunboer/AR-classifier-and-AR-CycleGAN.git
     ```
 
 2. pip all the requirement packages.
@@ -43,6 +43,9 @@ Ensure your Python >= 3.8 (recommended 3.8)
     # pip install all the packages
     pip install -r requirements.txt
     ```
+
+3. Prepare the yaml file for the RandStainNA
+
 
 
 *This document is currently being updated...*
